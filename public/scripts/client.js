@@ -85,12 +85,8 @@ $(document).ready(function () {
       event.preventDefault();
   
       let $textcount = $("#tweet-text").val().length;  
-      if($textcount > 140) {
-        // alert("Tweet content is too long"); 
-        return $(".message").slideDown(1000).show().delay(5000).slideUp(2000);
-             
-      } else if ($textcount == false || $textcount == null || $textcount === 0) {
-        // alert("Tweet is not submitted");
+
+      if ($textcount == false || $textcount == null || $textcount === 0 || $textcount > 140) {        
         return $(".message").slideDown(1000).show().delay(5000).slideUp(2000);        
       }  
 
