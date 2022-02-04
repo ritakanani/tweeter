@@ -1,0 +1,43 @@
+.message {
+  width: 70%;
+  margin: auto;
+  margin-top: 25px;
+  border: 3px solid red;
+  color: red;
+  font-weight: bolder;
+  text-align: center;  
+}
+
+.new-tweet-title {
+  font-size: 1.25em;
+}
+
+.new-tweet-form {
+  display: flex;
+  flex-direction: column;    
+}
+
+.new-tweet-form textarea {
+  border: none;
+  border-bottom: 3px solid black;
+  padding: 1em;
+}
+
+.new-tweet-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
+  margin: 1em 0;  
+}
+
+.new-tweet-button {
+  background-color: #4152a1;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 15px;
+}
+
+.new-tweet-counter {
+  font-weight: bold;
+}
