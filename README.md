@@ -8,7 +8,7 @@ This repository is the starter code for the project: Students will fork and clon
 
 !["Tweet box"](https://github.com/ritakanani/tweeter/blob/master/docs/tweet-box.png)
 
-!["Tweet with responsive box"](https://github.com/ritakanani/tweeter/blob/master/docs/tweet-box-mobile-responsive.png)
+!["Tweet box with error message"](https://github.com/ritakanani/tweeter/blob/master/docs/tweet-box-error.png)
 
 ## Getting Started
 
