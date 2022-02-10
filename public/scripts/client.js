@@ -1,6 +1,6 @@
 // Preventing XSS with Escaping: 
 // An XSS attack is a type of code injection: user input is mistakenly interpreted as malicious program code. In order to prevent this type of code injection, secure input handling is needed.
-const escape = function (str) {
+const escapeText = function (str) {
   let div = document.createElement("div");
   div.appendChild(document.createTextNode(str));
   return div.innerHTML;
@@ -8,6 +8,8 @@ const escape = function (str) {
 
 
 const createTweetElement = function (tweet) {
+
+  const content = escapeText(tweet.content.text);
   const $tweet = $(`
     <section class="tweets-container"> 
     <article class="tweet"> 
@@ -22,7 +24,7 @@ const createTweetElement = function (tweet) {
       </header>
   
       <main class="tweet-content">
-        <p>${escape(tweet.content.text)}</p>
+        <p>${content}</p>
       </main>
   
       <footer class="tweet-footer">
