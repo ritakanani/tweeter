@@ -1,41 +1,14 @@
-$(document).ready(function () {
-
-  const tweetData = [
-    {
-      "user": {
-        "name": "Newton",
-        "avatars": "https://i.imgur.com/73hZDYK.png"
-        ,
-        "handle": "@SirIsaac"
-      },
-      "content": {
-        "text": "If I have seen further it is by standing on the shoulders of giants"
-      },
-      "created_at": 1461116232227
-    },
-    {
-      "user": {
-        "name": "Descartes",
-        "avatars": "https://i.imgur.com/nlhLi3I.png",
-        "handle": "@rd" },
-      "content": {
-        "text": "Je pense , donc je suis"
-      },
-      "created_at": 1461113959088
-    }
-  ]
-  
-  // Preventing XSS with Escaping: 
-    // An XSS attack is a type of code injection: user input is mistakenly interpreted as malicious program code. In order to prevent this type of code injection, secure input handling is needed.
-  const escape = function (str) {
-    let div = document.createElement("div");
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
-  };
+// Preventing XSS with Escaping: 
+// An XSS attack is a type of code injection: user input is mistakenly interpreted as malicious program code. In order to prevent this type of code injection, secure input handling is needed.
+const escape = function (str) {
+  let div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
 
 
-  const createTweetElement = function (tweet) {
-    const $tweet = $(`
+const createTweetElement = function (tweet) {
+  const $tweet = $(`
     <section class="tweets-container"> 
     <article class="tweet"> 
       <header class="tweet-header">
@@ -63,72 +36,75 @@ $(document).ready(function () {
     </article>
     </section>
      `);
-     
-     $('#tweets-container').prepend($tweet); // to add it to the page so we can make sure it's got all the right elements, classes, etc.
+
+  $('#tweets-container').prepend($tweet); // to add it to the page so we can make sure it's got all the right elements, classes, etc.
+}
+
+const renderTweets = function (data) {
+  // loops through tweets
+  for (let tweet of data) {
+    // calls createTweetElement for each tweet
+    createTweetElement(tweet);
+    // takes return value and appends it to the tweets container
   }
-  
-    const renderTweets = function(data) {
-      // loops through tweets
-      for (let tweet of data) {
-        // calls createTweetElement for each tweet
-        createTweetElement(tweet);       
-        // takes return value and appends it to the tweets container
-      }
-    }  // end renderTweets functiion  
-    renderTweets(tweetData);
+}
+// renderTweets(tweetData);
+
+const loadTweets = function () {
+  $.ajax({
+    url: "http://localhost:8080/tweets",
+    method: "GET"
+  })
+    .then((results) => {
+      console.log("results", results);
+      $('#tweets-container').empty();
+      // for (let result of results) {
+      renderTweets(results);
+      // }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 
+$(document).ready(function () {
+  $(".message").hide();
+  $("#tweet-form").submit(function (event) {
 
-    $(".message").hide();
-    $("#tweet-form").submit(function(event) {
-      // prevent submission
-      event.preventDefault();
-  
-      let $textcount = $("#tweet-text").val().length;  
+    event.preventDefault();
 
-      if ($textcount == false || $textcount == null || $textcount === 0 || $textcount > 140) {        
-        return $(".message").slideDown(1000).show().delay(5000).slideUp(2000);        
-      }  
+    let $textcount = $("#tweet-text").val().length;
+    if ($textcount === 0) {
+      $(".message").find("p").text("");
+      $(".message").find("p").text("Can't post empty tweet");
+      return $(".message").slideDown(1000).show().delay(5000).slideUp(2000);
+    }
+    if ($textcount > 140) {
+      $(".message").find("p").text("");
+      $(".message").find("p").text("Tweet too long! maximum character exceeded limit.");
+      return $(".message").slideDown(1000).show().delay(5000).slideUp(2000);
+    }
 
-      // serialize get data of current content from form
-      // Serialize the form data and send it to the server as a query string
-      let data = $(this).serialize();      
-  
-      // receive the request of data 
-      $.ajax({
-        url: "http://localhost:8080/tweets",
-        method: "POST",
-        data: data
+    // serialize get data of current content from form
+    // Serialize the form data and send it to the server as a query string
+    let data = $(this).serialize();
+
+    // receive the request of data 
+    $.ajax({
+      url: "http://localhost:8080/tweets",
+      method: "POST",
+      data: data
+    })
+      .done((results) => {
+        $("#tweet-text").val('');
+        loadTweets();
+        console.log(results);
       })
-        .done((results) => {
-          $("#tweet-text").val('');
-          loadTweets();
-          console.log(results);
-        })
-        .fail((err) => {
-          console.log(err);
-        });
-    });  // end form submit function
-  
-  
-    const loadTweets = function() {
-        $.ajax({
-          url: "http://localhost:8080/tweets",
-          method: "GET"
-        })
-        .then((results) => {
-          console.log("results", results);
-          $('#tweets-container').empty();
-          for(let result of results) {          
-            createTweetElement(result);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      // });  // end button function
-    } // end loadTweets function
-  
-    // loadTweets();
-  
-  }); // close ready function
+      .fail((err) => {
+        console.log(err);
+      });
+  });
+  loadTweets();
+
+}); 

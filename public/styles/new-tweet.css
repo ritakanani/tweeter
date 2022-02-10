@@ -5,7 +5,14 @@
   border: 3px solid red;
   color: red;
   font-weight: bolder;
-  text-align: center;  
+  text-align: center; 
+  display: flex; 
+  align-items: center;
+  justify-content: space-around;
+}
+
+.message span {
+  padding: 0 25px;
 }
 
 .new-tweet-title {
@@ -18,6 +25,8 @@
 }
 
 .new-tweet-form textarea {
+  max-width: 100%;
+  height: auto;
   border: none;
   border-bottom: 3px solid black;
   padding: 1em;

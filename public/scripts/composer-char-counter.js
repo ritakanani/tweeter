@@ -12,7 +12,9 @@ $("document").ready(function () {
     const charCounter = $(".new-tweet-counter").html(count); 
     if (count < 0) {
       $(".new-tweet-counter").css("color", "red");      
-    } 
-  });  // close ready event
+    } else {
+      $(".new-tweet-counter").css("color", "black");
+    }
+  });  
   
-});   // close on event
+});   
